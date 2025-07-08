@@ -186,6 +186,8 @@ if not arch_folder.is_dir():
 
 def copy_json_files(items_path):
 
+    copy_count = 0
+
     for root, dirs, files in os.walk(items_path):
 
         for file in files:  # returns filename string
@@ -203,8 +205,10 @@ def copy_json_files(items_path):
 
                     # copy the file
                     shutil.copy2(os.path.join(root,file), arch_folder)
+                    copy_count += 1
 
-                    logger.info(str(file) + " copied")
+                    # set the specific file copied at the DEBUG level, or the logs fill up quickly.
+                    logger.debug(str(file) + " copied")
 
                 except ValueError:
                     # the file name is not a valid UUID, which means it's not the Item json we want to copy
@@ -212,7 +216,7 @@ def copy_json_files(items_path):
                     # pass
                     logger.debug(str(file) + " not copied")
 
-    logger.info("done copying JSON files")
+    logger.info("copied " + str(copy_count) + " JSON files to archive folder")
 
 # %%
 # Run the function to copy the files...
